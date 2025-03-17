@@ -1,6 +1,7 @@
 import express from 'express'
 import 'dotenv/config'
 import cors from 'cors'
+const PORT = process.env.PORT || 8000
 
 import { sendNotificationFCM, sendNotificationsToAllUsers } from './firebaseFCM.js'
 
@@ -24,13 +25,13 @@ server.get("/send", (req, res) => {
 
 server.get("/send-all", (req, res) => {
 
-   sendNotificationsToAllUsers();
+    sendNotificationsToAllUsers();
 
     // sendNotificationFCM("Vishwamohini", "Vishwamohini is good biy");
     res.send("asss");
 })
 
 
-server.listen(8000, () => {
+server.listen(PORT, () => {
     console.log("SERVER LISTENED AT 8000");
 })
