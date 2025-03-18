@@ -48,7 +48,6 @@ const OurServices = () => {
 
     return (
         <View style={{ paddingHorizontal: AppConstants.screenPadding }}>
-            <StatusBar hidden={true} />
             <View style={{ width: "100%", gap: vs(16), paddingHorizontal: AppConstants.screenPadding, borderColor: AppConstants.borderColor1, borderWidth: 2, padding: s(15), backgroundColor: "#FFFFFF", borderRadius: s(15) }}>
 
                 <View style={{ width: "80%", gap: vs(6) }}>

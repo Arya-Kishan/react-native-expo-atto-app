@@ -14,7 +14,6 @@ const AdminBooking = () => {
     const fetchAllBookings = async () => {
         setLoading(true);
         const bookings = await getAllBookings();
-        console.log("bookings : ", bookings.data);
         setBookings(bookings.data);
         setLoading(false);
     }

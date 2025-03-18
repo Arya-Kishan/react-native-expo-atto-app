@@ -34,10 +34,10 @@ const AddressForm = () => {
             setLoading(false);
 
             // ADDING ADDRESS TO REDUX STORE
-            dispatch(setSelectedAddress(addressesList));
+            dispatch(setSelectedAddress({ ...addressesList, id: addressesList.id }));
 
             // ADDING ADDRESS TO ASYNC STORAGE
-            await setUserAddressToAsyncStorage(addressesList);
+            await setUserAddressToAsyncStorage({ ...addressesList, id: addressesList.id });
 
             router.push("/(tabs)");
         }

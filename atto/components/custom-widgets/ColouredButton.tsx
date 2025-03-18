@@ -18,7 +18,7 @@ const ColouredButton: React.FC<ColouredButtonType> = ({ loading, handlePress, te
                 {
                     loading
                         ?
-                        <ActivityIndicator size={30} color={AppConstants.loaderColor1} />
+                        <ActivityIndicator size={30} color={AppConstants.loaderColorWhite} />
                         :
                         <Text style={styles.colouredBtnTxt}>{text}</Text>
 
@@ -35,14 +35,14 @@ const styles = StyleSheet.create({
         height: vs(40),
         width: "100%",
         paddingHorizontal: s(15),
-        paddingVertical: vs(10),
-        borderWidth: 2,
-        borderColor: AppConstants.borderColor1,
         borderRadius: s(20),
+        justifyContent: "center",
+        alignItems: "center"
     },
     colouredBtnTxt: {
         color: AppConstants.textColor1,
         textAlign: "center",
-        fontWeight: "500"
+        fontWeight: "500",
+        fontSize: s(15)
     },
 })

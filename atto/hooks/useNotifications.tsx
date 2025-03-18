@@ -4,9 +4,14 @@ import { saveTokenToFirestore } from '@/services/api_services/firebase_api_servi
 import { successToast } from '@/utils/toast';
 import * as Notifications from 'expo-notifications';
 import { Platform } from 'react-native';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/Store/store';
 
 export const useNotifications = (userId: string) => {
+    const { loggedInUser } = useSelector((store: RootState) => store.auth);
     useEffect(() => {
+
+        let unsubscribe: any;
 
         // Configure how notifications behave when received
         Notifications.setNotificationHandler({
@@ -27,19 +32,17 @@ export const useNotifications = (userId: string) => {
             });
         }
 
-
-        // LFTD : DON'T CALL EVERYTIME WHEN APP OPENS
         const setupFCM = async () => {
             const hasPermission = await requestFCMPermission();
             if (hasPermission) {
                 const token = await getFCMToken();
-                if (token) {
+                if (token && userId || loggedInUser?.fcmToken !== token) {
                     await saveTokenToFirestore(userId, token);
                 }
             }
 
             // Foreground listener
-            const unsubscribe = listenToForegroundNotifications((msg: any) => {
+            unsubscribe = listenToForegroundNotifications((msg: any) => {
                 successToast(msg?.notification?.title, msg?.notification?.body);
                 console.log('Foreground Message:', msg);
             });
@@ -63,5 +66,10 @@ export const useNotifications = (userId: string) => {
         };
 
         setupFCM();
+
+        return () => {
+            if (unsubscribe) unsubscribe();
+        };
+
     }, [userId]);
 };

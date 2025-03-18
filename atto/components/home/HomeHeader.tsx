@@ -34,35 +34,18 @@ const HomeHeader = () => {
     }
 
     return (
-        <View style={{ width: "100%", backgroundColor: AppConstants.backgroundColor1, height: vs(150), borderBottomRightRadius: 30, borderBottomLeftRadius: 30, paddingTop: AppConstants.statusBarHeight, padding: AppConstants.screenPadding }} >
+        <View style={{ width: "100%", backgroundColor: AppConstants.backgroundColor1, paddingTop: AppConstants.statusBarHeight, padding: AppConstants.screenPadding }} >
 
             {/* ADDRESS,SUB ADDRESS AND LOGO */}
             <View style={{ width: "100%", flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
                 {/* ADDRESS */}
-                <View>
+                <View style={{ width: "90%" }}>
                     <Text style={{ color: "white", fontSize: s(18), fontWeight: "bold" }} >Address</Text>
-                    <Text style={{ color: "white", fontSize: s(11), }} >  <Text>{selectedAddress?.house},{selectedAddress?.street},{selectedAddress?.city}{selectedAddress?.state}{selectedAddress?.pinCode}</Text></Text>
+                    <Text style={{ color: "white", fontSize: s(11), }} >{selectedAddress?.house},{selectedAddress?.street},{selectedAddress?.city}{selectedAddress?.state}{selectedAddress?.pinCode}</Text>
                 </View>
                 <Pressable onPress={handleAdminRoute}>
-                    <Image source={require("@/assets/images/icons/logo.png")} style={{ width: 25, height: 25 }} />
+                    <Image source={require("@/assets/images/icons/logo_white.png")} style={{ width: 30, height: 30 }} />
                 </Pressable>
-            </View>
-
-            {/* APP FEATUES TITLE AND ICON */}
-            <View style={{ flex: 1, flexDirection: "row", gap: s(5), justifyContent: "space-around", alignItems: "center" }}>
-                {/* service */}
-                {
-                    features.map((item, index) => (
-                        <View key={index} style={{ flexDirection: "row", gap: s(5), justifyContent: "center", alignItems: "center" }}>
-                            {item.icon}
-                            <View>
-                                <Text style={{ color: "white", fontSize: 13 }}>{item.title}</Text>
-                                <Text style={{ color: "white", fontSize: 10 }}>{item.subTitle}</Text>
-                            </View>
-                        </View>
-                    ))
-                }
-
             </View>
 
         </View>

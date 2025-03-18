@@ -3,8 +3,8 @@ import { bookingType } from '@/AppTypes'
 import BookingCard from '@/components/booking/BookingCard'
 import { getAllBookings, getUserBookings } from '@/services/api_services/firebase_api_services'
 import { RootState } from '@/Store/store'
-import React, { useEffect, useState } from 'react'
-import { ActivityIndicator, FlatList, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import React, { useCallback, useEffect, useState } from 'react'
+import { ActivityIndicator, FlatList, RefreshControl, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { s, vs } from 'react-native-size-matters'
 import { useSelector } from 'react-redux'
 
@@ -19,7 +19,6 @@ const Bookings = () => {
     setLoading(true);
     setIsUserBooking(true);
     const bookings = await getUserBookings(loggedInUser!);
-    console.log("bookings : ", bookings.data);
     setBookings(bookings.data);
     setLoading(false);
 
@@ -28,15 +27,6 @@ const Bookings = () => {
   useEffect(() => {
     fetchUserBookings();
   }, [])
-
-  const fetchAllBookings = async () => {
-    setLoading(true);
-    setIsUserBooking(false);
-    const bookings = await getAllBookings();
-    console.log("bookings : ", bookings.data);
-    setBookings(bookings.data);
-    setLoading(false);
-  }
 
   // RENDER ITEM
   const renderItemBooking = ({ item }: { item: bookingType }) => (<BookingCard item={item} />)
@@ -50,7 +40,7 @@ const Bookings = () => {
       </View>
 
       {/* ALL BOOKINGS */}
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center", overflow: "hidden" }}>
         {
           loading
             ?
@@ -65,6 +55,9 @@ const Bookings = () => {
                   data={bookings}
                   renderItem={renderItemBooking}
                   contentContainerStyle={{ width: "100%", gap: s(15), paddingVertical: vs(15), paddingHorizontal: AppConstants.screenPadding }}
+                  refreshControl={
+                    <RefreshControl refreshing={loading} onRefresh={fetchUserBookings} />
+                  }
                 />
               </View>
         }

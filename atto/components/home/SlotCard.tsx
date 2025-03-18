@@ -1,26 +1,27 @@
-import { ActivityIndicator, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React, { useState } from 'react'
-import { s, vs } from 'react-native-size-matters'
 import { AppConstants } from '@/AppConstants'
-import { RootState } from '@/Store/store'
-import { useSelector } from 'react-redux'
-import { createBooking } from '@/services/api_services/firebase_api_services'
 import { SlotsType } from '@/AppTypes'
-import { Timestamp } from "firebase/firestore";
+import { sendNotificationToAllAdmin } from '@/services/api_services/express_api_services'
+import { createBooking } from '@/services/api_services/firebase_api_services'
+import { RootState } from '@/Store/store'
 import { formatTime } from '@/utils/helper'
+import React, { useState } from 'react'
+import { ActivityIndicator, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { s, vs } from 'react-native-size-matters'
+import { useSelector } from 'react-redux'
 
-interface SlotCardType { item: SlotsType, index: number }
+interface SlotCardType { item: SlotsType, index: number, reFetchAllSlots: () => void }
 
-const SlotCard: React.FC<SlotCardType> = ({ item, index }) => {
+const SlotCard: React.FC<SlotCardType> = ({ item, index, reFetchAllSlots }) => {
     const [loading, setLoading] = useState(false);
     const { loggedInUser, selectedAddress } = useSelector((state: RootState) => state.auth);
 
     const addBooking = async () => {
         setLoading(true);
-        await createBooking({
+        const result = await createBooking({
             uuid: loggedInUser!.uuid,
             name: loggedInUser!.name,
             email: loggedInUser!.email,
+
             phone: selectedAddress!.phone,
             pinCode: selectedAddress!.pinCode,
             house: selectedAddress!.house,
@@ -29,13 +30,28 @@ const SlotCard: React.FC<SlotCardType> = ({ item, index }) => {
             city: selectedAddress!.city,
             state: selectedAddress!.state,
             type: selectedAddress!.type,
+
             availableTime: item.availableTime,
             previousPrice: item.previousPrice,
             price: item.price,
             workingTime: item.workingTime,
-            offer: item.offer
+            offer: item.offer,
+            slotId: item.id,
+
+            bookingType: "booking",
+            isBooked: false,
+
+            createAt: (new Date()).toString(),
         });
+
         setLoading(false);
+
+        // SENIDNG NOTIFICATION TO ALL ADMINS
+        if (result.success) {
+            reFetchAllSlots();
+            // sendNotificationToAllAdmin(loggedInUser?.name!, Date.now());
+        }
+
     }
 
     return (
@@ -50,15 +66,15 @@ const SlotCard: React.FC<SlotCardType> = ({ item, index }) => {
             {/* PRICE */}
             <Text style={styles.price}>₹{item.price} <Text style={styles.previousPrice}>₹{item.previousPrice}</Text></Text>
             {/* AVAILABLE TIMING */}
-            <Text style={styles.availableTimeTxt1}>Avaialble at <Text style={styles.availableTimeTxt2}>{formatTime(item?.availableTime)}</Text></Text>
+            <Text style={styles.availableTimeTxt1}>Avaialble in <Text style={styles.availableTimeTxt2}>15 mins</Text></Text>
             {/* BOOK BUTTON */}
-            <TouchableOpacity onPress={addBooking} style={styles.bookBtn}>
+            <TouchableOpacity onPress={() => { item.isBooked ? "" : addBooking() }} style={[styles.bookBtn, item.isBooked && styles.bookedBtn]}>
                 {
                     loading
                         ?
-                        <ActivityIndicator size={20} color={AppConstants.iconColor1} />
+                        <ActivityIndicator size={20} color={AppConstants.loaderColorViolet} />
                         :
-                        <Text style={styles.bookBtnTxt}>Book</Text>
+                        <Text style={[styles.bookBtnTxt, item.isBooked && styles.bookedTxt]}>{item.isBooked ? "Booked" : "Book"}</Text>
                 }
             </TouchableOpacity>
 
@@ -125,5 +141,11 @@ const styles = StyleSheet.create({
         color: AppConstants.textColor2,
         textAlign: "center",
         fontWeight: "bold"
+    },
+    bookedBtn: {
+        borderColor: AppConstants.borderColorGray
+    },
+    bookedTxt: {
+        color: AppConstants.textColorGray,
     },
 })

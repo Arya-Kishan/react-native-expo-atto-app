@@ -32,3 +32,49 @@ export const formatDateTime = (dateString: string) => {
 
     return `${day} ${month} ${year} | ${hours}:${minutes} ${amPm}`;
 };
+
+
+export function getNextFiveDays() {
+    const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+
+    const result = [];
+
+    const today = new Date();
+
+    for (let i = 0; i < 5; i++) {
+        const date = new Date();
+        date.setDate(today.getDate() + i);
+
+        result.push({
+            date: date.toDateString().split(' ')[2], // Format: YYYY-MM-DD
+            day: date.toDateString().split(' ')[0]
+        });
+    }
+
+    return result;
+}
+
+export const convertDateTimeIntoJSDate = (dateTime: any) => {
+    const input = dateTime
+
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = today.getMonth(); // 0 = January
+
+    // Extract hours and minutes
+    let [hours, minutes] = input.time.split(':').map(Number);
+
+    // Adjust for AM/PM
+    if (input.meridian === 'PM' && hours < 12) {
+        hours += 12;
+    }
+    if (input.meridian === 'AM' && hours === 12) {
+        hours = 0;
+    }
+
+    // Create final date
+    const finalDate = new Date(year, month, parseInt(input.date), hours, minutes);
+
+    return finalDate.toString();
+
+}

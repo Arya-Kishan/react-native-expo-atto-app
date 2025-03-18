@@ -28,14 +28,9 @@ const SignIn = () => {
         dispatch(setUserState('login'));
     }, [])
 
-
-    useEffect(() => {
-        console.log("authLoading ---------------- IN LOGIN ------------- : ", authLoading)
-    }, [authLoading])
-
     return (
         <ScrollView>
-            <LinearGradient colors={["#00435DFF", "#06001BFF", "#11004DFF"]} style={styles.mainLinearGradient}>
+            <LinearGradient colors={[AppConstants.linearGradient[0], AppConstants.linearGradient[1], AppConstants.linearGradient[2]]} style={styles.mainLinearGradient}>
 
                 {/* CREATE TEXT */}
                 <View style={styles.createBox}>

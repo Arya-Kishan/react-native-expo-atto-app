@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
   },
   btn: {
     borderWidth: 2,
-    borderColor: AppConstants.borderColorPrimary,
+    borderColor: AppConstants.borderColorViolet,
     borderRadius: AppConstants.buttonBorderRadius,
     padding: s(10),
 

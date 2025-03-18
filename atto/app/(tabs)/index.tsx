@@ -11,26 +11,27 @@ import Map from '@/components/home/Map';
 import { useNotifications } from '@/hooks/useNotifications';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/Store/store';
+import HomeHeaderFeatures from '@/components/home/HomeHeaderFeatures';
+import { vs } from 'react-native-size-matters';
 
 const TabIndex = () => {
 
     const { loggedInUser } = useSelector((store: RootState) => store.auth);
 
-    // USED FOR FCM - THIS IS THE MAIN TRIGGERING POINT
     useNotifications(loggedInUser?.uuid!);
 
     return (
-        <ScrollView>
-            <View style={{ gap: AppConstants.gapBetweenSections }}>
-                <StatusBar hidden={false} style="light" />
-                <HomeHeader />
+        <View>
+            <HomeHeader />
+            <ScrollView contentContainerStyle={{ gap: AppConstants.gapBetweenSections, paddingBottom: vs(100) }}>
+                <HomeHeaderFeatures />
                 <SlotsAvailable />
                 <ScheduleLater />
                 <OurServices />
                 <TrainedProfessional />
                 <Map />
-            </View>
-        </ScrollView>
+            </ScrollView>
+        </View>
     )
 }
 

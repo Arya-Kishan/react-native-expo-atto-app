@@ -9,21 +9,18 @@ const SelectAuth = () => {
     const router = useRouter();
 
     return (
-        <LinearGradient colors={["#00435DFF", "#06001BFF", "#11004DFF"]} style={styles.mainLinearGradient}>
+        <LinearGradient colors={[AppConstants.linearGradient[0], AppConstants.linearGradient[1], AppConstants.linearGradient[2]]} style={styles.mainLinearGradient}>
 
             <View style={styles.main}>
                 {/* LOGO AND TITLE */}
                 <View style={styles.logoBox}>
-                    <Image source={require("@/assets/images/icons/logo.png")} style={{ width: 25, height: 25 }} />
-
-                    <Text style={[styles.logoTxt, { fontFamily: "Alice_400Regular" }]}>Atto</Text>
+                    <Text style={styles.logoTxt}>Atto</Text>
                 </View>
+
+                <Image source={require("@/assets/images/banner.png")} style={{ width: vs(250), height: vs(250) }} />
 
                 {/* WELCOME,AUTH BUTTONS */}
                 <View style={styles.authBtnBox}>
-
-                    <Text style={[styles.wlcmTxt, { fontFamily: "Alice_400Regular" }]}>Welcome</Text>
-                    <Text style={styles.wlcmTxt}>Welcome</Text>
 
                     <Pressable onPress={() => router.push("/(auth)/signin")} style={styles.colouredBtn}>
                         <Text style={styles.colouredBtnTxt}>SIGN IN</Text>
@@ -34,8 +31,6 @@ const SelectAuth = () => {
                     </Pressable>
 
                 </View>
-
-                <Image source={require("@/assets/images/banner.png")} style={{ width: vs(250), height: vs(250) }} />
 
             </View>
 
@@ -50,13 +45,14 @@ const styles = StyleSheet.create({
         flex: 1,
         width: "100%",
         height: AppConstants.screenHeight,
-        paddingHorizontal: AppConstants.screenPadding + s(15),
-        justifyContent: "flex-end"
+        justifyContent: "flex-end",
     },
     main: {
+        alignItems: "center",
         height: "100%",
         justifyContent: "space-between",
-        paddingVertical: vs(50)
+        paddingTop: vs(40),
+        width: "100%",
     },
     logoBox: {
         flexDirection: "row",
@@ -65,19 +61,20 @@ const styles = StyleSheet.create({
         gap: s(5)
     },
     logoTxt: {
-        fontSize: 25,
-        fontWeight: "800",
+        fontSize: 45,
+        fontFamily: "Alice_400Regular",
         color: AppConstants.textColor1,
-    },
-    wlcmTxt: {
-        fontSize: 35,
-        fontWeight: "bold",
-        color: AppConstants.textColor1,
-        textAlign: "center"
     },
     authBtnBox: {
+        width: "100%",
         gap: vs(20),
-        paddingTop: vs(100),
+        height: vs(200),
+        backgroundColor: AppConstants.backgroundColorWhite,
+        borderTopLeftRadius: s(40),
+        borderTopRightRadius: s(40),
+        paddingHorizontal: s(20),
+        justifyContent: "center",
+        alignItems: "center"
     },
     authBtnTxt: {
         textAlign: "center",
@@ -85,18 +82,18 @@ const styles = StyleSheet.create({
         fontSize: 20,
     },
     colouredBtn: {
-        backgroundColor: "",
         width: "100%",
         paddingHorizontal: s(15),
         paddingVertical: vs(10),
         borderWidth: 2,
-        borderColor: AppConstants.borderColor2,
+        borderColor: AppConstants.borderColorViolet,
         borderRadius: s(20),
         marginTop: vs(10),
     },
     colouredBtnTxt: {
-        color: AppConstants.textColor1,
+        color: AppConstants.textColorViolet,
         textAlign: "center",
-        fontWeight: "500"
+        fontWeight: "500",
+        fontSize: s(14)
     },
 })

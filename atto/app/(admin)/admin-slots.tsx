@@ -1,39 +1,42 @@
 import { SlotsType } from '@/AppTypes';
 import React, { useEffect, useState } from 'react';
-import { FlatList, Modal, StyleSheet, Text, View } from 'react-native';
+import { FlatList, Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
-import { StatusBar } from 'expo-status-bar';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { AppConstants } from '@/AppConstants';
 import CreateSlotModal from '@/components/admin/slots/CreateSlotModal';
-import { getAllSlots } from '@/services/api_services/firebase_api_services';
-import { convertMinutesIntoHour, formatTime } from '@/utils/helper';
+import { getAllSlots, updateSlot } from '@/services/api_services/firebase_api_services';
+import { formatTime } from '@/utils/helper';
 import { s, vs } from 'react-native-size-matters';
+import useSlotService from '@/hooks/useSlotService';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/Store/store';
 
 const AdminSlots = () => {
 
-    const [loading, setLoading] = useState<boolean>(false);
-    const [slots, setSlots] = useState<SlotsType[]>([]);
+    const { slots, slotsLoader } = useSelector((store: RootState) => store.book);
+    const { fetchAllSlots, refetchAllSlots } = useSlotService();
 
     const [showModal, setShowModal] = useState(false);
-
-    const fetchAllSlots = async () => {
-        const { data, success } = await getAllSlots();
-        if (success) {
-            setSlots(data);
-        }
-    }
 
     useEffect(() => {
         fetchAllSlots();
     }, [])
 
-    console.log("slots : ", slots)
+    const handleUpdateSlot = async (item: SlotsType, wtd: boolean) => {
+        if (wtd) {
+            let { success } = await updateSlot(item, true);
+            success ? refetchAllSlots() : ""
+        } else {
+            let { success } = await updateSlot(item, false);
+            success ? refetchAllSlots() : ""
+        }
+    }
 
     // RENDER ITEM
-    const renderItemSlots = ({ index, item }: { index: number, item: SlotsType }) => (
+    const renderItemSlots = ({ item }: { index: number, item: SlotsType }) => (
         <View style={styles.slotBox}>
 
             <View style={styles.slotLeft}>
@@ -43,7 +46,19 @@ const AdminSlots = () => {
             <View style={styles.slotRight}>
                 <Text>Price : {item.price}</Text>
                 <Text>Avaialble Time : {formatTime(Number(item.availableTime))}</Text>
-                <Text>Working Time : {convertMinutesIntoHour(item.workingTime)}</Text>
+                <Text>Working Time : {item.workingTime} Mins</Text>
+                <Text>isBooked : {item.isBooked ? "true" : "false"}</Text>
+                <View style={{ flex: 1, flexDirection: "row", justifyContent: "space-between", gap: s(20), marginTop: vs(10) }}>
+
+                    <TouchableOpacity onPress={() => handleUpdateSlot(item, true)} style={{ backgroundColor: AppConstants.backgroundColorViolet, paddingHorizontal: s(15), paddingVertical: vs(5), borderRadius: AppConstants.buttonBorderRadius }}>
+                        <Text style={{ fontWeight: "600", color: AppConstants.textColorWhite }}>NOT CLEANED</Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity onPress={() => handleUpdateSlot(item, false)} style={{ backgroundColor: AppConstants.backgroundColorViolet, paddingHorizontal: s(15), paddingVertical: vs(5), borderRadius: AppConstants.buttonBorderRadius }}>
+                        <Text style={{ fontWeight: "600", color: AppConstants.textColorWhite }}>CLEANED</Text>
+                    </TouchableOpacity>
+
+                </View>
             </View>
 
         </View>
@@ -51,8 +66,6 @@ const AdminSlots = () => {
 
     return (
         <SafeAreaView style={styles.main}>
-
-            <StatusBar hidden={false} />
 
             <View style={styles.header}>
                 <Text style={styles.headerTxt}>Slots</Text>
@@ -63,7 +76,9 @@ const AdminSlots = () => {
                 <FlatList
                     data={slots}
                     renderItem={renderItemSlots}
-                    contentContainerStyle={{ gap: s(10), marginTop: vs(10) }}
+                    contentContainerStyle={{
+                        gap: s(10), marginTop: vs(10), paddingHorizontal: AppConstants.screenPadding
+                    }}
                 />
             </View>
 
@@ -74,7 +89,7 @@ const AdminSlots = () => {
                 visible={showModal}
                 onRequestClose={() => setShowModal(false)} // Handles back button on Android
             >
-                <CreateSlotModal setSlots={setSlots} slots={slots} setShowModal={setShowModal} />
+                {/* <CreateSlotModal setSlots={setSlots} slots={slots} setShowModal={setShowModal} /> */}
             </Modal>
 
         </SafeAreaView>
@@ -85,14 +100,20 @@ export default AdminSlots
 
 const styles = StyleSheet.create({
     main: {
-        padding: AppConstants.screenPadding
     },
     header: {
         flexDirection: "row",
-        justifyContent: "space-between"
+        justifyContent: "space-between",
+        width: "100%",
+        height: vs(80),
+        backgroundColor: AppConstants.backgroundColor1,
+        borderBottomLeftRadius: s(30),
+        borderBottomRightRadius: s(30),
+        alignItems: "center",
+        paddingHorizontal: AppConstants.screenPadding
     },
     headerTxt: {
-        fontSize: 25,
+        fontSize: 30,
         fontWeight: "800",
     },
     slotBox: {
@@ -100,7 +121,8 @@ const styles = StyleSheet.create({
         backgroundColor: "#D6D6D6FF",
         flexDirection: "row",
         gap: s(10),
-        padding: s(20)
+        padding: s(20),
+        borderRadius: AppConstants.sectionBorderRadius
     },
     slotLeft: {
         width: vs(40),

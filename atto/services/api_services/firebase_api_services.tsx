@@ -113,6 +113,35 @@ export const getUserAddress = async (uid: string): Promise<apiData> => {
 }
 
 
+// UPDATING USER ADDRESS
+export const updateUserProfile = async (userAddress: userAddressType, user: userCredentialsType) => {
+    console.log("userAddress : ", userAddress)
+    console.log("user : ", user)
+
+    try {
+
+        const addressRef = doc(firestore, 'addresses', userAddress.id!);
+        await updateDoc(addressRef, { ...userAddress });
+        const updatedUserAddress = await getDataFromFirestoreRef(addressRef);
+
+        const userRef = doc(firestore, 'users', user.uuid);
+        await updateDoc(userRef, { ...user });
+        const updatedUser = await getDataFromFirestoreRef(userRef);
+
+
+        Alert.alert("Success", "Profile updated successfully!");
+
+        return { data: { updatedUserAddress, updatedUser }, message: "Profile updated successfully", success: true };
+
+    } catch (error) {
+        Alert.alert("Error", `Profile Failed! ${error}`);
+        return { data: null, message: "Profile update failed", success: false };
+    }
+
+
+};
+
+
 
 
 //  ---------------- BOOKINGS --------------
@@ -121,7 +150,14 @@ export const getUserAddress = async (uid: string): Promise<apiData> => {
 export const createBooking = async (data: bookingType): Promise<apiData> => {
 
     try {
+
         await addDoc(collection(firestore, "bookings"), data);
+        // UPDATING SLOT IT GET BOOKED
+        const slotRef = doc(firestore, 'slots', data.slotId!);
+        await updateDoc(slotRef, {
+            isBooked: true, // or any other field you want to update
+        });
+
         Alert.alert("Success", "Bookings saved successfully!");
         return { data: null, message: "Booking retrieved successfully", success: true };
 
@@ -208,6 +244,22 @@ export const getAllSlots = async (): Promise<apiData> => {
     }
 };
 
+export const updateSlot = async (data: SlotsType, isBooked: boolean) => {
+
+    console.log("UPDATING SLOT : ", isBooked)
+
+    try {
+        const slotRef = doc(firestore, 'slots', data.id!);
+        await updateDoc(slotRef, {
+            isBooked: isBooked, // or any other field you want to update
+        });
+        return { data: null, message: "Slots updated success", success: true };
+    } catch (error) {
+        console.error("Error fetching users:", error);
+        return { data: null, message: "Slots updated failure", success: false };
+    }
+}
+
 
 
 
@@ -225,70 +277,3 @@ export const saveTokenToFirestore = async (userId: string, token: string) => {
         console.error('Error updating user token:', error);
     }
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// EXAMPLE TO FETCH ONLY SINGLE DOC
-const fetchDocumentById = async () => {
-    const docRef = doc(firestore, "your_collection_name", "102"); // Use the exact document ID
-
-    try {
-        const docSnap = await getDoc(docRef);
-
-        if (docSnap.exists()) {
-            console.log("Document Data:", docSnap.data()); // Returns a single document
-            return docSnap.data();
-        } else {
-            console.log("No such document!");
-            return null;
-        }
-    } catch (error) {
-        console.error("Error fetching document:", error);
-        return null;
-    }
-};
-
-// FUNCTION TO GET USERR ADDRESS
-export const fetchDocumentOfArrayExample = async (uid: string): Promise<apiData> => {
-
-    try {
-        const addressRef = collection(firestore, 'addresses'); // Reference to "users" collection
-        const q = query(addressRef, where('uuid', '==', uid)); // Query for age = 20
-
-        const querySnapshot = await getDocs(q);
-
-        // Map results to an array
-        const addressList = querySnapshot.docs.map(doc => ({
-            id: doc.id,
-            ...doc.data(),
-        }));
-
-        return { data: addressList, message: "Address retrieved successfully", success: true };
-        // Return the array of users
-    } catch (error) {
-        Alert.alert("Error fetching address", JSON.stringify(error));
-        return { data: null, message: "Address retrieved failure", success: true };
-    }
-
-}

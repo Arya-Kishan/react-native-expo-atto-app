@@ -4,6 +4,7 @@ import MaterialIcons from '@expo/vector-icons/MaterialIcons'
 import { bookingType } from '@/AppTypes'
 import { s, vs } from 'react-native-size-matters'
 import { formatTime } from '@/utils/helper'
+import { AppConstants } from '@/AppConstants'
 
 interface BookingCardType {
     item: bookingType
@@ -11,10 +12,10 @@ interface BookingCardType {
 
 const BookingCard: React.FC<BookingCardType> = ({ item }) => {
     return (
-        <View style={{ width: "100%", position: "relative", backgroundColor: "#FFFFFF", padding: s(10) }}>
+        <View style={{ width: "100%", position: "relative", backgroundColor: "#FFFFFF", padding: s(10), borderRadius: AppConstants.sectionBorderRadius }}>
 
             <View style={{ flexDirection: "row", gap: vs(4) }}>
-                <MaterialIcons name='delivery-dining' size={vs(50)} />
+                <MaterialIcons name='delivery-dining' size={vs(50)} color={AppConstants.iconColorViolet} />
                 <View>
                     <Text>Name : {item.name}</Text>
                     <Text>Email : {item.email}</Text>
@@ -33,7 +34,7 @@ const BookingCard: React.FC<BookingCardType> = ({ item }) => {
                 <Text>Price : ₹{item.price}</Text>
                 <Text>Working Time : {item.workingTime} Mins</Text>
                 <Text>Avaialble Time : {formatTime(item.availableTime)}</Text>
-                <Text>Created By : {item.createBy} Mins</Text>
+                <Text>Created By : {item.createAt} Mins</Text>
             </View>
 
         </View>

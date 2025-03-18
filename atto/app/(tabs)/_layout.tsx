@@ -1,5 +1,6 @@
 import { AppConstants } from '@/AppConstants';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import Feather from '@expo/vector-icons/Feather';
 import { Tabs } from 'expo-router';
 import React from 'react';
 import { StyleSheet } from 'react-native';
@@ -27,15 +28,11 @@ const TabLayout = () => {
             }} />
             <Tabs.Screen name='bookings' options={{
                 title: "Bookings",
-                tabBarIcon: ({ color }) => <Ionicons name='search' size={24} color={color} />
+                tabBarIcon: ({ color }) => <Feather name='book-open' size={24} color={color} />
             }} />
             <Tabs.Screen name='account' options={{
                 title: "Account",
                 tabBarIcon: ({ color }) => <Ionicons name='person-outline' size={24} color={color} />
-            }} />
-            <Tabs.Screen name='notification' options={{
-                title: "Notification",
-                tabBarIcon: ({ color }) => <Ionicons name='notifications' size={24} color={color} />
             }} />
         </Tabs>
     )

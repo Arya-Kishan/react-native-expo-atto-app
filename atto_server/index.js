@@ -3,7 +3,9 @@ import 'dotenv/config'
 import cors from 'cors'
 const PORT = process.env.PORT || 8000
 
-import { sendNotificationFCM, sendNotificationsToAllUsers } from './firebaseFCM.js'
+import { sendNotificationToAllAdmin, sendNotificationsToAllUsers } from './firebaseFCM.js'
+import { formatTimestamp } from './utils/Helper.js'
+import { sendMail } from './services/NodeMailer.js'
 
 const server = express();
 
@@ -18,17 +20,34 @@ server.get("/", (req, res) => {
     res.send("asss");
 })
 
-server.get("/send", (req, res) => {
-    sendNotificationFCM("eulU9_boQWeignEA7HRlTa:APA91bFhQQcGPw-hYx2qxBCArPaUV4-iVRGzAztXTv4G7J7iFtga6q8LJ1UvZUvm5KrFdHCnIRJ2Xgev-IIXeC8NtYWjsYEYUvGhP0EUS6kMSWROh7_j3Pg", "Vishwamohini", "Vishwamohini is good biy");
-    res.send("asss");
+server.post("/send-all-admins", async (req, res) => {
+    const { name, time } = req.body;
+
+    const data = await sendNotificationToAllAdmin("New Booking 💕", `${name} made a booking at ${formatTimestamp(time)}`);
+    if (data.success) {
+        res.json(data);
+    } else {
+        res.json(data);
+    }
+
 })
 
-server.get("/send-all", (req, res) => {
+server.post("/send-all-users", async (req, res) => {
 
-    sendNotificationsToAllUsers();
+    const { title, description } = req.body;
 
-    // sendNotificationFCM("Vishwamohini", "Vishwamohini is good biy");
-    res.send("asss");
+    const data = await sendNotificationsToAllUsers(title, description);
+    if (data.success) {
+        res.json(data);
+    } else {
+        res.json(data);
+    }
+})
+
+server.post("/send-email", async (req, res) => {
+    const { userEmail, problem } = req.body;
+    const data = await sendMail(userEmail, problem);
+    res.json(data);
 })
 
 

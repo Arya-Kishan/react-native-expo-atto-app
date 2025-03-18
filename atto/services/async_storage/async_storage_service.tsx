@@ -40,7 +40,6 @@ export const getUserAddressFromAsyncStorage = async () => {
 }
 
 export const setUserAddressToAsyncStorage = async (userAddress: userAddressType) => {
-    console.log("user address saving in async storage : ", userAddress);
     try {
         const data = await AsyncStorage.setItem("address", JSON.stringify(userAddress));
         return null;

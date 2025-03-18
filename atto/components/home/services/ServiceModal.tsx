@@ -2,7 +2,7 @@ import { AppConstants } from "@/AppConstants";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import React, { useEffect, useState } from "react";
-import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
+import { Image, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { s, vs } from "react-native-size-matters";
 
 const everydayCleaning = [
@@ -30,27 +30,27 @@ const everydayCleaning = [
         materials: [
             {
                 title: "Mop & Bucket",
-                image: <Ionicons name="add-circle" size={40} />,
+                image: "https://res.cloudinary.com/dwvuqahw2/image/upload/v1742302504/atto/icons/mop_bucket_bmp3pp.png",
             },
             {
                 title: "Surface cleaner",
-                image: <Ionicons name="add-circle" size={40} />,
+                image: "https://res.cloudinary.com/dwvuqahw2/image/upload/v1742302505/atto/icons/surface_cleaner_brlh35.png",
             },
             {
                 title: "Dusting cloth",
-                image: <Ionicons name="add-circle" size={40} />,
+                image: "https://res.cloudinary.com/dwvuqahw2/image/upload/v1742302500/atto/icons/dusting_cloth_cibdrf.png",
             },
             {
                 title: "Cleaning brush",
-                image: <Ionicons name="add-circle" size={40} />,
+                image: "https://res.cloudinary.com/dwvuqahw2/image/upload/v1742302499/atto/icons/cleaning_brush_zvtyx2.png",
             },
             {
                 title: "Broom",
-                image: <Ionicons name="add-circle" size={40} />,
+                image: "https://res.cloudinary.com/dwvuqahw2/image/upload/v1742302499/atto/icons/broom_d3siv4.png",
             },
             {
                 title: "Dustpan",
-                image: <Ionicons name="add-circle" size={40} />,
+                image: "https://res.cloudinary.com/dwvuqahw2/image/upload/v1742302500/atto/icons/dustpan_g5qbcw.png",
             },
         ]
     },
@@ -85,27 +85,27 @@ const weeklyCleaning = [
         materials: [
             {
                 title: "Mop & Bucket",
-                image: <Ionicons name="add-circle" size={40} />,
+                image: "https://res.cloudinary.com/dwvuqahw2/image/upload/v1742302504/atto/icons/mop_bucket_bmp3pp.png",
             },
             {
                 title: "Surface cleaner",
-                image: <Ionicons name="add-circle" size={40} />,
+                image: "https://res.cloudinary.com/dwvuqahw2/image/upload/v1742302505/atto/icons/surface_cleaner_brlh35.png",
             },
             {
                 title: "Dusting cloth",
-                image: <Ionicons name="add-circle" size={40} />,
+                image: "https://res.cloudinary.com/dwvuqahw2/image/upload/v1742302500/atto/icons/dusting_cloth_cibdrf.png",
             },
             {
                 title: "Cleaning brush",
-                image: <Ionicons name="add-circle" size={40} />,
+                image: "https://res.cloudinary.com/dwvuqahw2/image/upload/v1742302499/atto/icons/cleaning_brush_zvtyx2.png",
             },
             {
                 title: "Broom",
-                image: <Ionicons name="add-circle" size={40} />,
+                image: "https://res.cloudinary.com/dwvuqahw2/image/upload/v1742302499/atto/icons/broom_d3siv4.png",
             },
             {
                 title: "Dustpan",
-                image: <Ionicons name="add-circle" size={40} />,
+                image: "https://res.cloudinary.com/dwvuqahw2/image/upload/v1742302500/atto/icons/dustpan_g5qbcw.png",
             },
         ]
     },
@@ -135,23 +135,23 @@ const laundry = [
         materials: [
             {
                 title: "Washing Supplies",
-                image: <Ionicons name="add-circle" size={40} />,
+                image: "https://res.cloudinary.com/dwvuqahw2/image/upload/v1742302506/atto/icons/washing_supplies_y482w8.png",
             },
             {
                 title: "Machine Instruction",
-                image: <Ionicons name="add-circle" size={40} />,
+                image: "https://res.cloudinary.com/dwvuqahw2/image/upload/v1742302503/atto/icons/machine_instruction_deamtp.png",
             },
             {
                 title: "Drying rack",
-                image: <Ionicons name="add-circle" size={40} />,
+                image: "https://res.cloudinary.com/dwvuqahw2/image/upload/v1742302500/atto/icons/drying_rack_c7cnac.png",
             },
             {
                 title: "Iron and Board",
-                image: <Ionicons name="add-circle" size={40} />,
+                image: "https://res.cloudinary.com/dwvuqahw2/image/upload/v1742302501/atto/icons/iron_board_ms16t6.png",
             },
             {
                 title: "Mesh bags",
-                image: <Ionicons name="add-circle" size={40} />,
+                image: "https://res.cloudinary.com/dwvuqahw2/image/upload/v1742302503/atto/icons/mesh_bags_urt1t2.png",
             },
         ]
     },
@@ -182,19 +182,19 @@ const dishWashing = [
         materials: [
             {
                 title: "Dish soap/liquid",
-                image: <Ionicons name="add-circle" size={40} />,
+                image: "https://res.cloudinary.com/dwvuqahw2/image/upload/v1742302500/atto/icons/dish_soap_vd3xud.png",
             },
             {
                 title: "Scrubber/sponge",
-                image: <Ionicons name="add-circle" size={40} />,
+                image: "https://res.cloudinary.com/dwvuqahw2/image/upload/v1742302504/atto/icons/scrubber_ycl09l.png",
             },
             {
                 title: "Dishcloth",
-                image: <Ionicons name="add-circle" size={40} />,
+                image: "https://res.cloudinary.com/dwvuqahw2/image/upload/v1742302500/atto/icons/dusting_cloth_cibdrf.png",
             },
             {
                 title: "Dish Rack",
-                image: <Ionicons name="add-circle" size={40} />,
+                image: "https://res.cloudinary.com/dwvuqahw2/image/upload/v1742302499/atto/icons/dish_rack_ybihjm.png",
             },
         ]
     },
@@ -226,23 +226,23 @@ const bathroomCleaning = [
         materials: [
             {
                 title: "All-purpose cleaner",
-                image: <Ionicons name="add-circle" size={40} />,
+                image: "https://res.cloudinary.com/dwvuqahw2/image/upload/v1742303356/atto/icons/all_purpose_n4hsaj.png",
             },
             {
                 title: "Toilet cleaner and brush",
-                image: <Ionicons name="add-circle" size={40} />,
+                image: "https://res.cloudinary.com/dwvuqahw2/image/upload/v1742303320/atto/icons/toilet_cleaner_eymdiv.png",
             },
             {
                 title: "Mop and bucket",
-                image: <Ionicons name="add-circle" size={40} />,
+                image: "https://res.cloudinary.com/dwvuqahw2/image/upload/v1742302504/atto/icons/mop_bucket_bmp3pp.png",
             },
             {
                 title: "Scrubber or sponge",
-                image: <Ionicons name="add-circle" size={40} />,
+                image: "https://res.cloudinary.com/dwvuqahw2/image/upload/v1742302504/atto/icons/scrubber_ycl09l.png",
             },
             {
                 title: "Microfiber cloth",
-                image: <Ionicons name="add-circle" size={40} />,
+                image: "https://res.cloudinary.com/dwvuqahw2/image/upload/v1742302500/atto/icons/dusting_cloth_cibdrf.png",
             },
         ]
     },
@@ -275,19 +275,19 @@ const kitchenPrep = [
         materials: [
             {
                 title: "Knife",
-                image: <Ionicons name="add-circle" size={40} />,
+                image: "https://res.cloudinary.com/dwvuqahw2/image/upload/v1742302502/atto/icons/knife_ragkpx.png",
             },
             {
                 title: "Chopping board",
-                image: <Ionicons name="add-circle" size={40} />,
+                image: "https://res.cloudinary.com/dwvuqahw2/image/upload/v1742302499/atto/icons/chopping_board_s7ou4f.png",
             },
             {
                 title: "Ingredients",
-                image: <Ionicons name="add-circle" size={40} />,
+                image: "https://res.cloudinary.com/dwvuqahw2/image/upload/v1742302500/atto/icons/ingredients_nv1uon.png",
             },
             {
                 title: "Clear instruction",
-                image: <Ionicons name="add-circle" size={40} />,
+                image: "https://res.cloudinary.com/dwvuqahw2/image/upload/v1742302499/atto/icons/clear_instruction_khdqkc.png",
             }
         ]
     },
@@ -334,10 +334,10 @@ const ServiceModal: React.FC<ServiceModalType> = ({ visible, setVisible, selecte
             <View style={styles.modalBox}>
 
                 <View>
-                    <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} contentContainerStyle={{ marginVertical: vs(6), gap: s(10) }}>
+                    <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} contentContainerStyle={{ marginVertical: vs(6), marginBottom: vs(10), gap: s(0) }}>
                         {headings.map((item) => (
                             <Pressable onPress={() => { setData(item.item) }} key={item.title} style={[styles.headerBox, data[3].title == item.title && styles.selectedHeaderBox]}>
-                                <Text style={styles.headerBoxTxt}>{item.title}</Text>
+                                <Text style={[styles.headerBoxTxt, data[3].title == item.title && styles.selectedTxt]}>{item.title}</Text>
                             </Pressable>
                         ))}
                     </ScrollView>
@@ -378,7 +378,7 @@ const ServiceModal: React.FC<ServiceModalType> = ({ visible, setVisible, selecte
                             {data[2].materials?.map((item, index) => (
                                 <View key={index} style={{ gap: vs(4), alignItems: "center" }}>
                                     <View style={styles.iconBox}>
-                                        {item.image}
+                                        <Image source={{ uri: item.image }} style={{ width: s(40), height: s(40) }} />
                                     </View>
                                     <Text>{item.title}</Text>
                                 </View>
@@ -410,10 +410,23 @@ const styles = StyleSheet.create({
         borderTopLeftRadius: s(20),
         borderTopRightRadius: s(20),
     },
-    headerBox: { paddingHorizontal: s(20), borderRadius: s(10), borderWidth: 2, paddingVertical: vs(6) },
-    headerBoxTxt: {},
-    selectedHeaderBox: { backgroundColor: AppConstants.backgroundColor1, borderWidth: 0 },
-    selectedHeaderBoxTxt: {},
+    headerBox: {
+        paddingHorizontal: s(8),
+        borderRadius: s(10),
+        borderWidth: 0,
+        paddingVertical: vs(6)
+    },
+    headerBoxTxt: {
+        color: AppConstants.textColorViolet,
+        fontWeight: "700"
+    },
+    selectedHeaderBox: {
+        backgroundColor: AppConstants.backgroundColor1,
+        borderWidth: 0
+    },
+    selectedTxt: {
+        color: AppConstants.textColorWhite
+    },
     section: {
         width: "100%",
         padding: s(20),

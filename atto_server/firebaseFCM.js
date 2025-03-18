@@ -12,40 +12,74 @@ admin.initializeApp({
 const db = admin.firestore();
 
 
-async function sendNotificationFCM(deviceToken, title, body) {
+async function sendNotificationToAllAdmin(title, description) {
+    console.log("INSIDE SEND NOTIFICATION TO ALL ADMINS")
+    try {
+        console.log("FIREBASE FETCHING ALL USER START")
+        const usersSnapshot = await db.collection('users').get();
+        console.log("FIREBASE FETCHING ALL USER END")
 
-    const message = {
-        notification: {
-            title, body
-        },
-        android: {
+        const tokens = [];
+        usersSnapshot.forEach(doc => {
+            const data = doc.data();
+            if (data.fcmToken && data.role == "admin") {
+                tokens.push(data.fcmToken);
+            }
+        });
+
+        console.log("tokens : ", tokens);
+
+        if (tokens.length === 0) {
+            console.log('No FCM tokens found');
+            return { success: false, message: "NO FCM TOKEN FOUND", data: null, error: null };
+        }
+
+        const multicastMessage = {
             notification: {
-                sound: 'default',
-                icon: 'notification_icon', // <-- this will trigger the default sound on Android
+                title: title,
+                body: description
             },
-        },
-        apns: {
-            payload: {
-                aps: {
-                    sound: 'default', // <-- this will trigger the default sound on iOS
+            android: {
+                notification: {
+                    sound: 'default', // <-- this will trigger the default sound on Android
+                    icon: 'notification_icon', // <-- this will trigger the default sound on Android
+
                 },
             },
-        },
-        token: deviceToken
-    };
+            apns: {
+                payload: {
+                    aps: {
+                        sound: 'default', // <-- this will trigger the default sound on iOS
+                    },
+                },
+            },
+            tokens: tokens
+        };
 
-    try {
-        const response = await admin.messaging().send(message);
-        return { success: true, result: response, message: 'notification sent' };
+        console.log("SENDING NOTIFICATION TO ALL ADMINS STARTED")
+        const response = await admin.messaging().sendEachForMulticast(multicastMessage);
+        console.log("SENDING NOTIFICATION TO ALL ADMINS END")
+
+        response.responses.forEach((res, idx) => {
+            if (res.success) {
+                console.log(`Message sent successfully to token[${idx}]: ${tokens[idx]}`);
+            } else {
+                console.error(`Error sending to token[${idx}]: ${tokens[idx]}`, res.error);
+            }
+        });
+
+        console.log(`${response.successCount} messages were sent successfully`);
+        console.log(`${response.failureCount} messages failed`);
+        return { success: true, message: "NOTIFICATION SEND TO ALL USERS", data: { successCount: response.successCount, failureCount: response.failureCount }, error: null };
+
     } catch (error) {
-        console.log(error);
-        return { success: false, result: error, message: 'notification not sent' };
+        console.error('Error sending notifications:', error);
+        return { success: false, message: "ERROR IN NOTIFICATION SENDING TO ALL USER", data: null, error: JSON.stringify(error) };
     }
-
 }
 
 
-async function sendNotificationsToAllUsers() {
+async function sendNotificationsToAllUsers(title, description) {
     try {
         const usersSnapshot = await db.collection('users').get();
 
@@ -64,8 +98,8 @@ async function sendNotificationsToAllUsers() {
 
         const multicastMessage = {
             notification: {
-                title: 'Hello!',
-                body: 'This is a broadcast message 🚀'
+                title: title,
+                body: description
             },
             android: {
                 notification: {
@@ -98,13 +132,15 @@ async function sendNotificationsToAllUsers() {
 
         console.log(`${response.successCount} messages were sent successfully`);
         console.log(`${response.failureCount} messages failed`);
+        return { success: true, message: "NOTIFICATION SEND TO ALL USERS", data: { successCount: response.successCount, failureCount: response.failureCount }, error: null };
 
     } catch (error) {
         console.error('Error sending notifications:', error);
+        return { success: false, message: "ERROR IN NOTIFICATION SENDING TO ALL USER", data: null, error: JSON.stringify(error) };
     }
 }
 
 
 
 
-export { sendNotificationFCM, sendNotificationsToAllUsers };
+export { sendNotificationToAllAdmin, sendNotificationsToAllUsers };

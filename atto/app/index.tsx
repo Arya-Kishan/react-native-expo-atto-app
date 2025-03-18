@@ -3,14 +3,14 @@ import { getUserAddressFromAsyncStorage, getUserCredentialsFromAsyncStorage } fr
 import { auth } from "@/services/configs/firebaseConfig";
 import { setSelectedAddress, setUserCredential } from "@/Store/slices/authSlice";
 import { AppDispatch, RootState } from "@/Store/store";
+import { Alice_400Regular, useFonts } from "@expo-google-fonts/alice";
 import { Redirect, SplashScreen, useRouter } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { onAuthStateChanged, User } from "firebase/auth";
 import { useEffect, useState } from "react";
-import { ActivityIndicator, ScrollView, StyleSheet } from "react-native";
+import { ScrollView, StyleSheet } from "react-native";
 import { s, vs } from "react-native-size-matters";
 import { useDispatch, useSelector } from "react-redux";
-import { useFonts, Alice_400Regular } from "@expo-google-fonts/alice"
 
 export default function Index() {
 
@@ -66,7 +66,6 @@ export default function Index() {
 
   return (
     <ScrollView>
-      <StatusBar hidden={true} />
 
       {
         isLoggedIn

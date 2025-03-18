@@ -136,10 +136,10 @@ const useAuth = () => {
             }
 
             // ADDING ADDRESS TO REDUX STORE
-            dispatch(setSelectedAddress(addressesList[0]));
+            dispatch(setSelectedAddress({ ...addressesList[0], id: addressesList[0].id }));
 
             // ADDING ADDRESS TO ASYNC STORAGE
-            await setUserAddressToAsyncStorage(addressesList[0]);
+            await setUserAddressToAsyncStorage({ ...addressesList[0], id: addressesList[0].id });
             router.replace("/(tabs)");
         } catch (error: any) {
             // IF USER SIGNED WITH GOOGLE BUT NOT EXIST IN FIREBASE
@@ -244,11 +244,6 @@ const useAuth = () => {
     }
 
     //  --------------- SINGOUT END FOR BOTH GOOGLE AND FIREBASE ------------
-
-
-    console.log("authLoading ------- INSIDE USEAUTH -------- : ", authLoading)
-
-
 
 
     return { authLoading, handleSignIn, handleSignUp, handleGoogleSignIn, handleLogOut }

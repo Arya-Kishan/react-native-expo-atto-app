@@ -6,9 +6,8 @@ import UnColouredButton from '@/components/custom-widgets/UnColouredButton';
 import { createSlotsFireStore } from '@/services/api_services/firebase_api_services';
 import { RootState } from '@/Store/store';
 import { formatTime } from '@/utils/helper';
-import { LinearGradient } from 'expo-linear-gradient';
 import React, { useState } from 'react';
-import { ActivityIndicator, KeyboardAvoidingView, Platform, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import { KeyboardAvoidingView, Platform, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import { s, vs } from 'react-native-size-matters';
 import { useSelector } from 'react-redux';
 
@@ -160,7 +159,7 @@ const styles = StyleSheet.create({
     },
     input: {
         borderWidth: 2,
-        borderColor: AppConstants.borderColorPrimary,
+        borderColor: AppConstants.borderColorViolet,
         borderRadius: s(6),
         padding: s(10),
         fontSize: s(16)

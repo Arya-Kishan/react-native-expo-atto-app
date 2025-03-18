@@ -1,15 +1,19 @@
 import { AppConstants } from '@/AppConstants';
 import { bookingType, userCredentialsType } from '@/AppTypes';
+import NotifyAllUserModal from '@/components/admin/users/NotifyAllUserModal';
 import UserCard from '@/components/admin/users/UserCard';
 import { getAllUsers } from '@/services/api_services/firebase_api_services';
+import Ionicons from '@expo/vector-icons/Ionicons';
 import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, FlatList, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, FlatList, Modal, StyleSheet, Text, View } from 'react-native';
 import { s, vs } from 'react-native-size-matters';
 
 const AdminUsers = () => {
 
     const [users, setUsers] = useState<bookingType[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
+    const [showModal, setShowModal] = useState(false);
+
 
     const fetchAllUsers = async () => {
         setLoading(true);
@@ -46,13 +50,26 @@ const AdminUsers = () => {
                             <View style={{ width: "100%", flex: 1 }}>
                                 <FlatList
                                     data={users}
-                                    keyExtractor={(item) => (`${item.createdAt}`)}
+                                    keyExtractor={(item, index) => (`${item.createAt! + index}`)}
                                     renderItem={({ item }: { item: userCredentialsType }) => (<UserCard user={item} />)}
                                     contentContainerStyle={{ width: "100%", gap: s(15), paddingVertical: vs(15), paddingHorizontal: AppConstants.screenPadding }}
                                 />
                             </View>
                 }
             </View>
+
+            <View style={{ position: "absolute", bottom: vs(50), right: s(30) }}>
+                <Ionicons name='notifications-circle' size={60} onPress={() => setShowModal(true)} />
+            </View>
+
+            <Modal
+                animationType="slide"
+                transparent={true}
+                visible={showModal}
+                onRequestClose={() => setShowModal(false)} // Handles back button on Android
+            >
+                <NotifyAllUserModal setShowModal={setShowModal} />
+            </Modal>
 
         </View>
     )
